@@ -40,8 +40,8 @@
 */
 #include "u8x8.h"
 
-
-
+//(lorol) - redefined  void u8x8_SetContrast(u8x8_t *u8x8, uint8_t value);  to set a dynamic grayscale.
+static uint8_t fontbr = 0xff; // use value between 0 and 15 to dim
 
 static const uint8_t u8x8_d_ssd1322_powersave0_seq[] = {
   U8X8_START_TRANSFER(),             	/* enable chip, delay is part of the transfer start */
@@ -56,7 +56,6 @@ static const uint8_t u8x8_d_ssd1322_powersave1_seq[] = {
   U8X8_END_TRANSFER(),             	/* disable chip */
   U8X8_END()             			/* end of sequence */
 };
-
 
 
 /* interpret b as a monochrome bit pattern, write value 15 for high bit and value 0 for a low bit */
@@ -108,8 +107,8 @@ static uint8_t *u8x8_ssd1322_8to32(U8X8_UNUSED u8x8_t *u8x8, uint8_t *ptr)
     for( i = 0; i < 8; i++ )
     {
       v = 0;
-      if ( a&1 ) v |= 0xf0;
-      if ( b&1 ) v |= 0x0f;
+      if ( a&1 ) v |= (0xf0 & fontbr); // take only the high nibble
+      if ( b&1 ) v |= (0x0f & (fontbr>>4));
       *dest = v;
       dest+=4;
       a >>= 1;
@@ -136,7 +135,7 @@ static uint8_t *u8x8_ssd1322_4to32(U8X8_UNUSED u8x8_t *u8x8, uint8_t *ptr)
     for( i = 0; i < 8; i++ )
     {
       v = 0;
-      if ( a&1 ) v = 0xff;
+      if ( a&1 ) v |= fontbr;
       *dest = v;
       dest+=4;
       a >>= 1;
@@ -171,10 +170,12 @@ uint8_t u8x8_d_ssd1322_common(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void *
       break;
 #ifdef U8X8_WITH_SET_CONTRAST
     case U8X8_MSG_DISPLAY_SET_CONTRAST:
-      u8x8_cad_StartTransfer(u8x8);
+/*    u8x8_cad_StartTransfer(u8x8);
       u8x8_cad_SendCmd(u8x8, 0x0C1 );
-      u8x8_cad_SendArg(u8x8, arg_int );	/* ssd1322 has range from 0 to 255 */
+      u8x8_cad_SendArg(u8x8, arg_int );    //  ssd1322 has range from 0 to 255 default 159 (9F)
       u8x8_cad_EndTransfer(u8x8);
+*/
+     fontbr = (arg_int<<4)|0x0f;
       break;
 #endif
     case U8X8_MSG_DISPLAY_DRAW_TILE:
@@ -280,7 +281,7 @@ static const uint8_t u8x8_d_ssd1322_256x64_init_seq[] = {
   U8X8_CAA(0xa0, 0x06, 0x011),	/* Set Re-Map / Dual COM Line Mode */  
   U8X8_CA(0xab, 0x01),			/* Enable Internal VDD Regulator */  
   U8X8_CAA(0xb4, 0xa0, 0x005|0x0fd),	/* Display Enhancement A */  
-  U8X8_CA(0xc1, 0x9f),			/* contrast */  
+  U8X8_CA(0xc1, 0xff),          /* contrast 9f */
   U8X8_CA(0xc7, 0x0f),			/* Set Scale Factor of Segment Output Current Control */  
   U8X8_C(0xb9),		                /* linear grayscale */
   U8X8_CA(0xb1, 0xe2),			/* Phase 1 (Reset) & Phase 2 (Pre-Charge) Period Adjustment */  
@@ -460,10 +461,12 @@ uint8_t u8x8_d_ssd1322_common2(u8x8_t *u8x8, uint8_t msg, uint8_t arg_int, void 
       break;
 #ifdef U8X8_WITH_SET_CONTRAST
     case U8X8_MSG_DISPLAY_SET_CONTRAST:
-      u8x8_cad_StartTransfer(u8x8);
+/*    u8x8_cad_StartTransfer(u8x8);
       u8x8_cad_SendCmd(u8x8, 0x0C1 );
-      u8x8_cad_SendArg(u8x8, arg_int );	/* ssd1322 has range from 0 to 255 */
+      u8x8_cad_SendArg(u8x8, arg_int ); //  ssd1322 has range from 0 to 255 default 159 (9F)
       u8x8_cad_EndTransfer(u8x8);
+*/
+     fontbr = (arg_int<<4)|0x0f;
       break;
 #endif
     case U8X8_MSG_DISPLAY_DRAW_TILE:
@@ -600,7 +603,7 @@ static const uint8_t u8x8_d_ssd1322_128x64_init_seq[] = {
   //U8X8_CAA(0xa0, 0x06, 0x011),	/* Set Re-Map / Dual COM Line Mode */  
   U8X8_CAA(0xa0, 0x16, 0x011),	/* Set Re-Map / Dual COM Line Mode (NHD-2.7-12864WDW3-M datasheet) */  
   U8X8_CA(0xc7, 0x0f),			/* Set Scale Factor of Segment Output Current Control */  
-  U8X8_CA(0xc1, 0x9f),			/* contrast */  
+  U8X8_CA(0xc1, 0xff),          /* contrast 9f*/
   //U8X8_CA(0xb1, 0xe2),			/* Phase 1 (Reset) & Phase 2 (Pre-Charge) Period Adjustment */  
   U8X8_CA(0xb1, 0xf2),			/* Phase 1 (Reset) & Phase 2 (Pre-Charge) Period Adjustment (NHD-2.7-12864WDW3-M datasheet) */  
   U8X8_CA(0xbb, 0x1f),			/* precharge  voltage */    
