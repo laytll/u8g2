@@ -272,30 +272,29 @@ static const uint8_t u8x8_d_ssd1322_256x64_init_seq[] = {
   U8X8_START_TRANSFER(),             	/* enable chip, delay is part of the transfer start */
   U8X8_DLY(1),
   
-  U8X8_CA(0xfd, 0x12),            	/* unlock */
-  U8X8_C(0xae),		                /* display off */
-  U8X8_CAA(0xb4, 0xA2, 0xB5),			/* set display clock divide ratio/oscillator frequency (set clock as 80 frames/sec)  */  
-  U8X8_CAA(0xA0, 0x10, 0x11),			/* multiplex ratio 1/64 Duty (0x0F~0x3F) */  
-  U8X8_CA(0xCA, 0x3F),			/* display offset, shift mapping ram counter */  
-  U8X8_CAA(0xD1, 0x80, 0x20),			/* display start line */  
-  //U8X8_CAA(0xa0, 0x14, 0x11),	/* Set Re-Map / Dual COM Line Mode */  
-  U8X8_CA(0xC1, 0x7D),			/* Enable Internal VDD Regulator */  
-  U8X8_CA(0xc7, 0x0f),			/* Set Scale Factor of Segment Output Current Control */  
-  U8X8_CA(0xb3, 0x61),			/* Phase 1 (Reset) & Phase 2 (Pre-Charge) Period Adjustment */  
-  U8X8_CA(0xb1, 0xF5),			/* Phase 1 (Reset) & Phase 2 (Pre-Charge) Period Adjustment */  
-  U8X8_CA(0xbb, 0x1f),			/* precharge  voltage */  
-  U8X8_CA(0xbE, 0x07),			/* precharge  voltage */  
-  U8X8_CA(0xb6, 0x0F),			/* precharge  period */  
-  U8X8_C(0xB9),			/* vcomh */  
-  U8X8_CA(0xAB, 0x01),		                /* normal display */
-  U8X8_C(0x00),		                /* exit partial display */
-  U8X8_CA(0xA1, 0x00),		                /* exit partial display */
-  U8X8_CA(0xA2, 0x00),		                /* exit partial display */
-  U8X8_C(0xA6),		                /* exit partial display */
-  U8X8_CAA(0x15, 0x1C, 0x5B),			/* display start line */  
-  U8X8_CAA(0x75, 0x80, 0x3F),			/* display start line */  
-  U8X8_C(0x5C),		                /* exit partial display */
-  U8X8_C(0xAF),	                /* exit partial display */
+  U8X8_CA (0xfd, 0x12),            /* unlock */
+  U8X8_C  (0xae),		                /* display off */
+  U8X8_CAA(0xb4, 0xA2, 0xB5),			/* display enhancement, internal VSL*/
+  U8X8_CAA(0xA0, 0x10, 0x11),   /*set Re-map and Dual COM Line mode*/
+  U8X8_CA (0xCA, 0x3F),			      /**  set Mux ratio */
+  U8X8_CAA(0xD1, 0x82, 0x20),     /*  Display enhancement B  */  
+  U8X8_CA (0xC1, 0x7D),			
+  U8X8_CA (0xc7, 0x0f),			
+  U8X8_CA (0xb3, 0x61),			
+  U8X8_CA (0xb1, 0xF5),			
+  U8X8_CA (0xbb, 0x1f),			
+  U8X8_CA (0xbE, 0x07),			
+  U8X8_CA (0xb6, 0x0F),			
+  U8X8_C  (0xB9),			              /** set default linear gray scale table */
+  U8X8_CA (0xAB, 0x01),
+  U8X8_C  (0x00),		                /** enable grayscale table */  
+  U8X8_CA (0xA1, 0x00),		        /** set display start line */        
+  U8X8_CA (0xA2, 0x00),		        /* display offset  */  
+  U8X8_C  (0xA6),		                /** set display mode in regards to greyscaling. */ 
+  U8X8_CAA(0x15, 0x1C, 0x5B),			/* display start line  28, 88*/  
+  U8X8_CAA(0x75, 0x00, 0x3F),			/* display start line 00, 63*/  
+  U8X8_C  (0x5C),		                
+  U8X8_C  (0xAF),	                
 
 
 // 
