@@ -275,7 +275,7 @@ static const uint8_t u8x8_d_ssd1322_256x64_init_seq[] = {
   U8X8_CA (0xfd, 0x12),            /* unlock */
   U8X8_C  (0xae),		                /* display off */
   U8X8_CAA(0xb4, 0xA2, 0xB5),			/* display enhancement, internal VSL*/
-  U8X8_CAA(0xA0, 0x10, 0x11),   /*set Re-map and Dual COM Line mode*/
+  //U8X8_CAA(0xA0, 0x10, 0x11),   /*set Re-map and Dual COM Line mode*/
   U8X8_CA (0xCA, 0x3F),			      /**  set Mux ratio */
   U8X8_CAA(0xD1, 0x82, 0x20),     /*  Display enhancement B  */  
   U8X8_CA (0xC1, 0x7D),			
@@ -291,8 +291,8 @@ static const uint8_t u8x8_d_ssd1322_256x64_init_seq[] = {
   U8X8_CA (0xA1, 0x00),		        /** set display start line */        
   U8X8_CA (0xA2, 0x00),		        /* display offset  */  
   U8X8_C  (0xA6),		                /** set display mode in regards to greyscaling. */ 
-  U8X8_CAA(0x15, 0x1C, 0x5B),			/* display start line  28, 88*/  
-  U8X8_CAA(0x75, 0x00, 0x3F),			/* display start line 00, 63*/  
+  U8X8_CAA(0x15, 0x1C, 0x5B),			/* display start line column address  28, 88*/  
+  U8X8_CAA(0x75, 0x00, 0x3F),			/* display start line row address 00, 63*/  
   U8X8_C  (0x5C),		                
   U8X8_C  (0xAF),	                
 
