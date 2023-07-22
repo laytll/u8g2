@@ -291,7 +291,9 @@ static const uint8_t u8x8_d_ssd1322_256x64_init_seq[] = {
   U8X8_CA (0xA1, 0x00),		        /** set display start line */        
   U8X8_CA (0xA2, 0x00),		        /* display offset  */  
   U8X8_C  (0xA6),		                /** set display mode in regards to greyscaling. */ 
-  U8X8_CAA(0x15, 0x1C, 0x5B),			/* display start line column address  28, 88*/  
+    U8X8_CAA(0x15, 0x00, 0xFF),			/* display start line column address  28, 88*/  
+
+  //U8X8_CAA(0x15, 0x1C, 0x5B),			/* display start line column address  28, 88*/  
   U8X8_CAA(0x75, 0x00, 0x3F),			/* display start line row address 00, 63*/  
   U8X8_C  (0x5C),		                
   U8X8_C  (0xAF),	                
